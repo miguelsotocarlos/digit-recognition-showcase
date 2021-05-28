@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+
+  <body>
+    <div class="drag-wrapper">
+      <div id="pca" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Arrastrá acá el archivo train.cvs y yo hago el PCA</p>
+      </div>
+      <div id="knn" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>O Arrastrá acá el archivo trained.txt con el PCA ya hecho</p>
+      </div>
+      <div id="fetch" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>O hacé click acá para traértelo del servidor</p>
+      </div>
+    </div>
+    <div class="center">
+      <p id="result"></p>
+    </div>
+    <div class="center">
+      <canvas width="280" height="280" id="canvas"></canvas>
+    </div>
+    <div class="center">
+      <button id="predict">predict</button>
+      <button id="clear">clear</button>
+    </div>
+    <link rel="stylesheet" href="stylesheet.css">  
+    <script src="main.js"></script>
+    <script src="build/tp2.js"></script>
+  </body>
+</html>
