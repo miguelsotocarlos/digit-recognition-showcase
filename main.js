@@ -144,6 +144,7 @@ function shuffleArray(array) {
 var Module = {
     onRuntimeInitialized: function () {
         function parse_np(buf) {
+
             function get(i) {
                 slice = buf.slice(0, i);
                 buf = buf.slice(i);
@@ -153,14 +154,17 @@ var Module = {
             alpha = shape[0];
             size = shape[1];
             n = shape[2];
+
+        	al = Math.min(document.getElementById('alpha').valueAsNumber, alpha)
+
             console.log(alpha + " " + size + " " + n)
             console.log(buf.byteLength)
             mat_data = new Float64Array(get(alpha * size * 8));
             images_data = new Uint8Array(get(n * size));
             labels_data = new Int32Array(get(n * 4));
 
-            mat = new Module.EigenMatrix(size, alpha);
-            for(i = 0; i < size; ++i) for(j = 0; j < alpha; ++j) {
+            mat = new Module.EigenMatrix(size, al);
+            for(i = 0; i < size; ++i) for(j = 0; j < al; ++j) {
                 mat.set(i, j, mat_data[i*alpha + j]);
             }
 
@@ -175,13 +179,14 @@ var Module = {
             }
 
             return {
-                pca: Module.PCA.from_proj(alpha, mat),
+                pca: Module.PCA.from_proj(al, mat),
                 images: images,
                 labels: labels
             };
         }
-        function rest(pca, images, labels) {
-            knn = new Module.KNNClassifier(30, true);
+
+        function todo(pca, images, labels, k, pesos) {
+            knn = new Module.KNNClassifier(k, pesos);
             knn.fit(pca.transform(images), labels);
 
             console.log("KNN done");
@@ -212,6 +217,26 @@ var Module = {
 	                })
                 })
             };
+        }
+
+        function rest(pca, images, labels) {
+        	/*function update(k, pesos) {
+        		new_pca = new Module.EigenMatrix(image_size, alpha)
+        		proj = pca.get_projection();
+        		for(i = 0; i < alpha; ++i) for(j = 0; j < image_size; ++j) {
+        			new_pca.set(j, i, proj.get(j, i))
+        		}
+        		rest(Module.PCA.from_proj(alpha, new_pca), images, labels, k, pesos)
+        	}*/
+			k = document.getElementById('k').valueAsNumber
+    		pesos = document.getElementById('pesos').checked
+        	todo(pca, images, labels, k, pesos)
+    		/*k = document.getElementById('k')
+    		pesos = document.getElementById('pesos')
+
+        	document.getElementById('retrain').onclick = function() {
+        		update(alpha.valueAsNumber, k.valueAsNumber, pesos.checked)
+        	}*/
         }
 
 		function process_inner_blob(blob) {
@@ -247,6 +272,7 @@ var Module = {
             	process_inner_blob(blob);
             });
         }
+
         function process_file(file) {
         	say('loading...')
 
@@ -280,7 +306,7 @@ var Module = {
                 rest(PCA, images, labels);
             });
         }
-        document.getElementById('pca').dropHandler = function(ev) {
+        /*document.getElementById('pca').dropHandler = function(ev) {
             // Prevent default behavior (Prevent file from being opened)
             ev.preventDefault();
 
@@ -301,7 +327,7 @@ var Module = {
                 }
             }
             if(files.length == 1) process_file(files[0]);
-        }
+        }*/
         document.getElementById('knn').dropHandler = function(ev) {
             // Prevent default behavior (Prevent file from being opened)
             ev.preventDefault();

@@ -5,12 +5,24 @@
   </head>
 
   <body>
-    <div class="drag-wrapper">
-      <div id="pca" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-        <p>Arrastrá acá el archivo train.cvs y yo hago el PCA</p>
+    <div class="center"><p>Elegí los parámetros del algoritmo primero</p></div>
+    <div class="center">
+      <div class="space">
+        <label for="k"><p>k =</p></label><input type="number" id="k" name="k" placeholder="4" min="1" max="100">
       </div>
+      <div class="space">
+        <label for="alpha"><p>alpha =</p></label> <input type="number" id="alpha" name="alpha" placeholder="50" min="1" max="100">
+      </div>
+      <div class="space">
+        <label for="pesos"><p>con pesos?</p></label> <input type="checkbox" id="pesos" name="pesos">
+      </div>
+    </div>
+    <div class="drag-wrapper">
+      <!--<div id="pca" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Arrastrá acá el archivo train.cvs y yo hago el PCA</p>
+      </div>-->
       <div id="knn" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-        <p>O Arrastrá acá el archivo trained.txt con el PCA ya hecho</p>
+        <p>Arrastrá acá el archivo trained.txt con el PCA ya hecho</p>
       </div>
       <div id="fetch" class="drag" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
         <p>O hacé click acá para traértelo del servidor</p>
@@ -26,7 +38,7 @@
       <button id="predict">predict</button>
       <button id="clear">clear</button>
     </div>
-    <link rel="stylesheet" href="stylesheet.css">  
+    <link rel="stylesheet" href="stylesheet.css">
     <script src="main.js"></script>
     <script src="build/tp2.js"></script>
   </body>
